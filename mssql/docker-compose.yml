@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    platform: linux
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Abc@1234
+      - MSSQL_PID=Developer
+    volumes:
+      - ./mssql/data:/var/opt/mssql/data
+      - ./mssql/log:/var/opt/mssql/log
+      - ./mssql/secrets:/var/opt/mssql/secrets
+      - ./backups:/var/backups
