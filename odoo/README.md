@@ -19,7 +19,7 @@
 	```
  6. If dry run is success create the certificate without dry run
 	```bash
-	docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.com
+	docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.com
 	```
  7. Uncomment the 443 server in nginx config file **(Verify the cert file names with your domain name)**
  8. Restart nginx server
