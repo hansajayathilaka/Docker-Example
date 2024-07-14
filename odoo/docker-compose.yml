@@ -7,8 +7,9 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - ./odoo-custom-addons:/mnt/extra-addons
+      - ./custom-addons:/mnt/extra-addons
       - ./odoo-config:/etc/odoo
+      - ./odoo-data:/var/lib/odoo
 
   db:
     image: postgres:15
@@ -17,7 +18,7 @@ services:
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=odoo
     volumes:
-      - ./odoo-db-data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data
   
   pgadmin:
     image: dpage/pgadmin4
