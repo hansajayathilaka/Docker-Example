@@ -1,0 +1,55 @@
+services:
+  web:
+    build:
+      target: production
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    image: hansajayathilaka/simple-django-web:0.0.2
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    environment:
+      - ENV=prod
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-+&!@#^&*
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - CSRF_TRUSTED_ORIGINS=http://localhost,http://127.0.0.1
+      - DB_NAME=myproject
+      - DB_USER=myproject
+      - DB_PASSWORD=myproject
+      - DB_HOST=db
+      - DB_PORT=5432
+      - PORT=8001
+    links:
+      - db:db
+  
+  db:
+    image: postgres:16
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=myproject
+      - POSTGRES_USER=myproject
+      - POSTGRES_PASSWORD=myproject
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+      dockerfile: ./Dockerfile
+    image: hansajayathilaka/simple-django-nginx:0.0.4
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    environment:
+      - NGINX_PORT=80
+      - PROXY_PASS_BASE_URL=http://web:8001
+    links:
+      - web:web
