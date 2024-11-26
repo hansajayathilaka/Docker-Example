@@ -1,8 +1,8 @@
-version: '3.9'
 services:
   mssql:
     image: mcr.microsoft.com/mssql/server
     platform: linux
+    restart: always
     ports:
       - 1433:1433
     environment:
@@ -14,3 +14,16 @@ services:
       - ./mssql/log:/var/opt/mssql/log
       - ./mssql/secrets:/var/opt/mssql/secrets
       - ./backups:/var/backups
+
+  sqlpad:
+    image: sqlpad/sqlpad
+    restart: always
+    container_name: sqlpad
+    environment:
+      - SQLPAD_DB_CONNECTION_URI=mssql://sa:Abc@1234@db:1433/master
+      - SQLPAD_ADMIN=admin@admin.com
+      - SQLPAD_ADMIN_PASSWORD=admin
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mssql
