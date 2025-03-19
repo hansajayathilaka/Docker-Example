@@ -1,0 +1,9 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    volumes:
+      - ./custom-addons:/srv
+      # - /filebrowser/filebrowser.db:/database.db
+      # - /filebrowser/.filebrowser.json:/.filebrowser.json
+    ports:
+      - "80:80"
